@@ -1,22 +1,29 @@
+# productos_medios.py
 import tkinter as tk
-
-def productos_medios(semilla, cantidad_numeros, resultado_text):
+def productos_medios(semilla_x0, semilla_x1, cantidad_numeros, resultado_text):
     resultado_text.delete(1.0, tk.END)  # Limpiar el área de texto
-    semilla = int(semilla)
+    x0 = int(semilla_x0)
+    x1 = int(semilla_x1)
     cantidad_numeros = int(cantidad_numeros)
+
+    d = len(semilla_x0)  # Número de dígitos (D)
     
-    resultado_text.insert(tk.END, f"Semilla inicial: {semilla}\n")
+    resultado_text.insert(tk.END, f"Semilla X₀ = {x0}, Semilla X₁ = {x1}\n")
     
     for i in range(cantidad_numeros):
-        cuadrado = semilla ** 2
-        resultado_text.insert(tk.END, f"Paso {i+1}: Semilla {semilla} al cuadrado: {cuadrado}\n")
+        # Multiplicar X₀ * X₁
+        yi = x0 * x1
+        resultado_text.insert(tk.END, f"Paso {i+1}: Y{i} = {x0} * {x1} = {yi}\n")
         
-        cuadrado_str = str(cuadrado).zfill(8)  # Aseguramos que tenga 8 dígitos
-        resultado_text.insert(tk.END, f"Número al cuadrado con ceros añadidos: {cuadrado_str}\n")
+        # Convertir a cadena y extraer los D dígitos centrales
+        yi_str = str(yi).zfill(2 * d)  # Asegurar que tenga 2D dígitos
+        start = len(yi_str) // 2 - d // 2
+        xi_plus_1 = int(yi_str[start:start + d])
         
-        # Seleccionamos los 4 dígitos centrales
-        start = len(cuadrado_str) // 2 - 2
-        semilla = int(cuadrado_str[start:start + 4])
-        resultado_text.insert(tk.END, f"Nueva semilla (4 dígitos centrales): {semilla}\n")
-        resultado_text.insert(tk.END, f"Número pseudoaleatorio generado: 0.{semilla}\n")
-        resultado_text.insert(tk.END, "-" * 40 + "\n")
+        # Generar número pseudoaleatorio
+        ri = xi_plus_1 / (10 ** d)
+        resultado_text.insert(tk.END, f"Nueva semilla X{i+2} = {xi_plus_1}, Número pseudoaleatorio r{i} = {ri}\n")
+        
+        # Actualizar X₀ y X₁
+        x0, x1 = x1, xi_plus_1
+        resultado_text.insert(tk.END, "-" * 50 + "\n")
