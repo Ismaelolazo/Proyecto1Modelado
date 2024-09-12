@@ -1,6 +1,7 @@
 import tkinter as tk
 from productos_medios import productos_medios
 from congruencial_lineal import congruencial_lineal
+from congruencial_multiplicativo import congruencial_multiplicativo
 from cuadrados_medios import cuadrados_medios
 
 # Funciones para mostrar solo los campos necesarios
@@ -34,6 +35,19 @@ def mostrar_campos_congruencial_lineal():
     entry_cantidad.grid(row=4, column=1)
     button_ejecutar_congruencial_lineal.grid(row=5, column=0, columnspan=2)
 
+def mostrar_campos_congruencial_multiplicativo():
+    ocultar_todos_los_campos()
+    label_semilla.grid(row=1, column=0)
+    entry_semilla.grid(row=1, column=1)
+    label_a.grid(row=2, column=0)
+    entry_a.grid(row=2, column=1)
+    label_g.grid(row=3, column=0)
+    entry_g.grid(row=3, column=1)
+    label_cantidad.grid(row=4, column=0)
+    entry_cantidad.grid(row=4, column=1)
+    button_ejecutar_congruencial_multiplicativo.grid(row=5, column=0, columnspan=2)
+
+# Ocultar todos los campos
 def ocultar_todos_los_campos():
     label_semilla.grid_forget()
     entry_semilla.grid_forget()
@@ -41,14 +55,21 @@ def ocultar_todos_los_campos():
     entry_cantidad.grid_forget()
     label_a.grid_forget()
     entry_a.grid_forget()
-    label_c.grid_forget()
-    entry_c.grid_forget()
+    if 'label_c' in globals():  # Asegura que label_c esté definido antes de usarlo
+        label_c.grid_forget()
+    if 'entry_c' in globals():
+        entry_c.grid_forget()
+    if 'label_g' in globals():
+        label_g.grid_forget()
+    if 'entry_g' in globals():
+        entry_g.grid_forget()
     label_semilla_x0.grid_forget()
     entry_semilla_x0.grid_forget()
     label_semilla_x1.grid_forget()
     entry_semilla_x1.grid_forget()
     button_ejecutar_productos_medios.grid_forget()
     button_ejecutar_congruencial_lineal.grid_forget()
+    button_ejecutar_congruencial_multiplicativo.grid_forget()
     button_ejecutar_cuadrados_medios.grid_forget()
 
 # Crear la ventana principal
@@ -74,7 +95,7 @@ menu_congruenciales.menu = tk.Menu(menu_congruenciales, tearoff=0)
 menu_congruenciales["menu"] = menu_congruenciales.menu
 
 menu_congruenciales.menu.add_command(label="Lineal", command=mostrar_campos_congruencial_lineal)
-menu_congruenciales.menu.add_command(label="Multiplicativo", command=lambda: resultado_text.insert(tk.END, "Método Congruencial Multiplicativo aún no implementado.\n"))
+menu_congruenciales.menu.add_command(label="Multiplicativo", command=mostrar_campos_congruencial_multiplicativo)
 menu_congruenciales.grid(row=0, column=1)
 
 # Etiquetas y campos de entrada
@@ -89,6 +110,9 @@ entry_a = tk.Entry(root)
 
 label_c = tk.Label(root, text="c (Incremento):")
 entry_c = tk.Entry(root)
+
+label_g = tk.Label(root, text="g (Para m = 2^g):")
+entry_g = tk.Entry(root)
 
 # Etiquetas para Productos Medios
 label_semilla_x0 = tk.Label(root, text="Semilla X₀:")
@@ -106,6 +130,9 @@ button_ejecutar_productos_medios = tk.Button(root, text="Ejecutar",
 
 button_ejecutar_congruencial_lineal = tk.Button(root, text="Ejecutar", 
                                                 command=lambda: congruencial_lineal(entry_semilla.get(), entry_cantidad.get(), entry_a.get(), entry_c.get(), resultado_text))
+
+button_ejecutar_congruencial_multiplicativo = tk.Button(root, text="Ejecutar", 
+                                                       command=lambda: congruencial_multiplicativo(entry_semilla.get(), entry_a.get(), entry_g.get(), entry_cantidad.get(), resultado_text))
 
 # Área de texto para mostrar el resultado
 resultado_text = tk.Text(root, height=15, width=70)
